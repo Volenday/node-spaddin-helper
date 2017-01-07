@@ -5,7 +5,7 @@ import {Url} from "../helpers/url";
 
     
     interface ITupleTokenExpiration { token: string,  expired: Date };
-    interface IContextPersistenceHandler {
+    interface IContextCacheHandler {
         save(req: any, context: SharePointContext) : void;
         load(req: any) : SharePointContext;
     }
@@ -23,7 +23,7 @@ import {Url} from "../helpers/url";
         protected userAccessTokenForSPHost :ITupleTokenExpiration; 
         protected appOnlyAccessTokenForSPHost:ITupleTokenExpiration;
 
-        public static ContextCacheHandler: IContextPersistenceHandler;
+        public static ContextCacheHandler: IContextCacheHandler;
 
         private cacheKey: string = null;
 
