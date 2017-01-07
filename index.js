@@ -1,5 +1,5 @@
 module.exports = {
-  client: require('./sharepoint/client'),
-  configuration: require('./sharepoint/configuration'),
-  context: require('./sharepoint/context'),
+  SharePointRestClient: require('./sharepoint/client').SharePointRestClient,
+  SharePointAddinConfiguration: require('./sharepoint/configuration').SharePointAddinConfiguration,
+  SharePointContext: require('./sharepoint/context').SharePointContext,
 };
