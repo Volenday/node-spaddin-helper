@@ -43,7 +43,8 @@ class SharePointContext {
         // If no context cache mechanism is specified, return nothing
         if (!SharePointContext.ContextCacheHandler)
             return null;
-        return SharePointContext.ContextCacheHandler.load(req);
+        let info = SharePointContext.ContextCacheHandler.load(req);
+        return SharePointContext.createFromContextInfo(info);
     }
     static validateContext(context, req) {
         // TODO Implement this
@@ -60,7 +61,7 @@ class SharePointContext {
         // If no context cache mechanism is specified, don't do anything
         if (!SharePointContext.ContextCacheHandler)
             return;
-        return SharePointContext.ContextCacheHandler.save(req, context);
+        return SharePointContext.ContextCacheHandler.save(req, context.getContextInfo());
     }
     static getFromRequest(req) {
         if (!req)
@@ -76,6 +77,20 @@ class SharePointContext {
             }
         }
         return spContext;
+    }
+    getContextInfo() {
+        return {
+            SPHostUrl: this.SPHostUrl,
+            SPAppWebUrl: this.SPAppWebUrl,
+            SPLanguage: this.SPLanguage,
+            SPClientTag: this.SPClientTag,
+            SPProductNumber: this.SPProductNumber,
+            contextToken: this.contextToken,
+            contextTokenStr: this.contextTokenStr
+        };
+    }
+    static createFromContextInfo(info) {
+        return new SharePointContext(info.SPHostUrl, info.SPAppWebUrl, info.SPLanguage, info.SPClientTag, info.SPProductNumber, info.contextTokenStr, info.contextToken);
     }
     static createFromRequest(req) {
         if (!req)

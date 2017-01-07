@@ -3,11 +3,20 @@ import {TokenHelper} from  "./token-helper";
 import {SharePointRestClient} from "./client";
 import {Url} from "../helpers/url";
 
-    
+    export interface ISharePointContextInfo {
+        SPHostUrl: string, 
+        SPAppWebUrl: string, 
+        SPLanguage: string, 
+        SPClientTag: string, 
+        SPProductNumber: string,
+        contextTokenStr?: string,
+        contextToken?: any
+    }
+
     interface ITupleTokenExpiration { token: string,  expired: Date };
     interface IContextCacheHandler {
-        save(req: any, context: SharePointContext) : void;
-        load(req: any) : SharePointContext;
+        save(req: any, contextInfo: ISharePointContextInfo) : void;
+        load(req: any) : ISharePointContextInfo;
     }
 
     export class SharePointContext {
@@ -52,7 +61,8 @@ import {Url} from "../helpers/url";
             if (!SharePointContext.ContextCacheHandler)
                 return null;
 
-            return SharePointContext.ContextCacheHandler.load(req);
+            let info: ISharePointContextInfo = SharePointContext.ContextCacheHandler.load(req);
+            return SharePointContext.createFromContextInfo(info);
         }
 
         private static validateContext(context: SharePointContext, req) : boolean {
@@ -73,7 +83,7 @@ import {Url} from "../helpers/url";
             if (!SharePointContext.ContextCacheHandler)
                 return;
 
-            return SharePointContext.ContextCacheHandler.save(req, context);
+            return SharePointContext.ContextCacheHandler.save(req, context.getContextInfo());
         }
 
         public static getFromRequest(req) : SharePointContext {
@@ -108,6 +118,28 @@ import {Url} from "../helpers/url";
             if (!SPProductNumber) throw new Error("SPProductNumber is required.");
             if (!SPLanguage) throw new Error("SPLanguage is required.");
             if (!SPClientTag) throw new Error("SPCLientTag is required.");
+        }
+
+        public getContextInfo() : ISharePointContextInfo {
+            return {
+                SPHostUrl: this.SPHostUrl,
+                SPAppWebUrl: this.SPAppWebUrl,
+                SPLanguage: this.SPLanguage,
+                SPClientTag: this.SPClientTag,
+                SPProductNumber: this.SPProductNumber,
+                contextToken: this.contextToken,
+                contextTokenStr: this.contextTokenStr
+            };
+        }
+
+        public static createFromContextInfo(info: ISharePointContextInfo) : SharePointContext {
+            return new SharePointContext(info.SPHostUrl, 
+                info.SPAppWebUrl, 
+                info.SPLanguage, 
+                info.SPClientTag, 
+                info.SPProductNumber, 
+                info.contextTokenStr, 
+                info.contextToken);
         }
 
         public static createFromRequest(req) : SharePointContext {
