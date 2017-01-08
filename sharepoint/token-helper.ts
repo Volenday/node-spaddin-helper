@@ -79,8 +79,9 @@ public static getAccessToken(contextToken: any, siteUrl: string, appOnly:boolean
                 if (!appOnly) {
                     body.push("grant_type=refresh_token");
                     body.push(`refresh_token=${refreshtoken}`);
+                } else {
+                    body.push("grant_type=client_credentials");
                 }
-                
                 body.push(`client_id=${principals.formattedClientId}`);
                 body.push(`client_secret=${encodeURIComponent(config.clientSecret)}`);
                 body.push(`resource=${principals.resource}`);
