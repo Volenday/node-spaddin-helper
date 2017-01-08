@@ -74,8 +74,11 @@ public static getAccessToken(contextToken: any, siteUrl: string, appOnly:boolean
             let refreshtoken = contextToken.refreshtoken;
 
             let body = [];
-            body.push("grant_type=refresh_token");
-            body.push(`refresh_token=${refreshtoken}`);
+
+            if (!appOnly) {
+                body.push("grant_type=refresh_token");
+                body.push(`refresh_token=${refreshtoken}`);
+            }
             body.push(`client_id=${principals.formattedClientId}`);
             body.push(`client_secret=${encodeURIComponent(config.clientSecret)}`);
             body.push(`resource=${principals.resource}`);
