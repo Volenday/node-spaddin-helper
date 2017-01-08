@@ -7,7 +7,7 @@ class SharePointRestClient {
         this.authToken = authToken;
     }
     // private getHeaders(requestDigest: string = null, contentLength: number = null) : any {
-    getHeaders(requestDigest = null) {
+    getHeaders(xVerb = null, requestDigest = null) {
         let headers = {
             "Authorization": `Bearer ${this.authToken}`,
             "Accept": 'application/json; odata=verbose',
@@ -18,6 +18,9 @@ class SharePointRestClient {
         // }
         if (requestDigest) {
             headers["X-RequestDigest"] = requestDigest;
+        }
+        if (xVerb) {
+            headers["X-HTTP-Method"] = xVerb;
         }
         return headers;
     }
@@ -49,13 +52,13 @@ class SharePointRestClient {
             });
         });
     }
-    issueWriteRequest(verb, relativeUrl, data) {
+    postRequest(verb, relativeUrl, data) {
         return new Promise((resolve, reject) => {
             return this.getContextInfo()
                 .then(contextInfo => {
                 let args = {
-                    headers: this.getHeaders(contextInfo.d.FormDigestValue),
-                    method: verb
+                    headers: this.getHeaders(verb, contextInfo.d.FormDigestValue),
+                    method: 'POST'
                 };
                 if (data) {
                     args["body"] = data;
@@ -71,16 +74,16 @@ class SharePointRestClient {
         });
     }
     post(relativeUrl, data) {
-        return this.issueWriteRequest('POST', relativeUrl, data);
+        return this.postRequest(null, relativeUrl, data);
     }
     put(relativeUrl, data) {
-        return this.issueWriteRequest('PUT', relativeUrl, data);
+        return this.postRequest('PUT', relativeUrl, data);
     }
     patch(relativeUrl, data) {
-        return this.issueWriteRequest('PATCH', relativeUrl, data);
+        return this.postRequest('PATCH', relativeUrl, data);
     }
     delete(relativeUrl) {
-        return this.issueWriteRequest('DELETE', relativeUrl);
+        return this.postRequest('DELETE', relativeUrl);
     }
 }
 SharePointRestClient.ContextInfoRelativeUrl = '_api/contextinfo';

@@ -12,7 +12,7 @@ export class SharePointRestClient {
     }
 
     // private getHeaders(requestDigest: string = null, contentLength: number = null) : any {
-    private getHeaders(requestDigest: string = null) : any {
+    private getHeaders(xVerb: string=null, requestDigest: string = null) : any {
         let headers = {
             "Authorization": `Bearer ${this.authToken}`,
             "Accept": 'application/json; odata=verbose',
@@ -23,6 +23,9 @@ export class SharePointRestClient {
         // }
         if (requestDigest) {
             headers["X-RequestDigest"] = requestDigest;
+        }
+        if (xVerb) {
+            headers["X-HTTP-Method"] = xVerb;
         }
         return headers;
     }
@@ -59,13 +62,13 @@ export class SharePointRestClient {
         });
     }
 
-    private issueWriteRequest(verb: string, relativeUrl: string, data?: any) : Promise<any> {
+    private postRequest(verb: string, relativeUrl: string, data?: any) : Promise<any> {
          return new Promise((resolve, reject) => {
             return this.getContextInfo()
             .then(contextInfo => {
                 let args = {
-                    headers: this.getHeaders(contextInfo.d.FormDigestValue),
-                    method: verb
+                    headers: this.getHeaders(verb, contextInfo.d.FormDigestValue),
+                    method: 'POST'
                 };
                 if (data) {
                     args["body"] = data;
@@ -82,18 +85,18 @@ export class SharePointRestClient {
     }
 
     public post(relativeUrl: string, data: any) : Promise<any> {
-         return this.issueWriteRequest('POST', relativeUrl, data);
+         return this.postRequest(null, relativeUrl, data);
     }
 
     public put(relativeUrl: string, data: any) : Promise<any> {
-        return this.issueWriteRequest('PUT', relativeUrl, data);
+        return this.postRequest('PUT', relativeUrl, data);
     }
 
     public patch(relativeUrl: string, data: any) : Promise<any> {
-       return this.issueWriteRequest('PATCH', relativeUrl, data);
+       return this.postRequest('PATCH', relativeUrl, data);
     }
 
     public delete(relativeUrl: string) : Promise<any> {
-        return this.issueWriteRequest('DELETE', relativeUrl);
+        return this.postRequest('DELETE', relativeUrl);
     }
 }
