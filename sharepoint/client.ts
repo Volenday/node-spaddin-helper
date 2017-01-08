@@ -26,6 +26,7 @@ export class SharePointRestClient {
         }
         if (xVerb) {
             headers["X-HTTP-Method"] = xVerb;
+            headers["If-Match"] = "*";
         }
         return headers;
     }
