@@ -6,14 +6,20 @@ class SharePointRestClient {
         this.url = url;
         this.authToken = authToken;
     }
-    getHeaders() {
-        return {
+    // private getHeaders(requestDigest: string = null, contentLength: number = null) : any {
+    getHeaders(requestDigest = null) {
+        let headers = {
             "Authorization": `Bearer ${this.authToken}`,
-            // "Accept": 'application/json;odata=verbose',
-            // "Content-Type": 'application/json;odata=verbose'
-            "Accept": 'application/json',
-            "Content-Type": 'application/json'
+            "Accept": 'application/json; odata=verbose',
+            "Content-Type": 'application/json; odata=verbose'
         };
+        // if (contentLength) {
+        //     headers["Content-Length"] = contentLength;
+        // }
+        if (requestDigest) {
+            headers["X-RequestDigest"] = requestDigest;
+        }
+        return headers;
     }
     getFullUrl(urlPart) {
         return URL.resolve(this.url, urlPart);
@@ -30,11 +36,10 @@ class SharePointRestClient {
             });
         });
     }
-    post(relativeUrl, data) {
+    getContextInfo() {
         return new Promise((resolve, reject) => {
-            node_fetch_1.default(this.getFullUrl(relativeUrl), {
+            node_fetch_1.default(this.getFullUrl(SharePointRestClient.ContextInfoRelativeUrl), {
                 headers: this.getHeaders(),
-                body: data,
                 method: 'POST'
             }).then(r => {
                 resolve(r.json());
@@ -44,47 +49,40 @@ class SharePointRestClient {
             });
         });
     }
-    put(relativeUrl, data) {
+    issueWriteRequest(verb, relativeUrl, data) {
         return new Promise((resolve, reject) => {
-            node_fetch_1.default(this.getFullUrl(relativeUrl), {
-                headers: this.getHeaders(),
-                body: data,
-                method: 'PUT'
-            }).then(r => {
-                resolve(r.json());
-            }).catch(error => {
-                console.log("[FETCH::ERROR] " + error);
-                reject(error);
+            return this.getContextInfo()
+                .then(contextInfo => {
+                let args = {
+                    headers: this.getHeaders(contextInfo.d.FormDigestValue),
+                    method: verb
+                };
+                if (data) {
+                    args["body"] = data;
+                }
+                node_fetch_1.default(this.getFullUrl(relativeUrl), args)
+                    .then(r => {
+                    resolve(r.json());
+                }).catch(error => {
+                    console.log("[FETCH::ERROR] " + error);
+                    reject(error);
+                });
             });
         });
+    }
+    post(relativeUrl, data) {
+        return this.issueWriteRequest('POST', relativeUrl, data);
+    }
+    put(relativeUrl, data) {
+        return this.issueWriteRequest('PUT', relativeUrl, data);
     }
     patch(relativeUrl, data) {
-        return new Promise((resolve, reject) => {
-            node_fetch_1.default(this.getFullUrl(relativeUrl), {
-                headers: this.getHeaders(),
-                body: data,
-                method: 'PATCH'
-            }).then(r => {
-                resolve(r.json());
-            }).catch(error => {
-                console.log("[FETCH::ERROR] " + error);
-                reject(error);
-            });
-        });
+        return this.issueWriteRequest('PATCH', relativeUrl, data);
     }
     delete(relativeUrl) {
-        return new Promise((resolve, reject) => {
-            node_fetch_1.default(this.getFullUrl(relativeUrl), {
-                headers: this.getHeaders(),
-                method: 'DELETE'
-            }).then(r => {
-                resolve(r.json());
-            }).catch(error => {
-                console.log("[FETCH::ERROR] " + error);
-                reject(error);
-            });
-        });
+        return this.issueWriteRequest('DELETE', relativeUrl);
     }
 }
+SharePointRestClient.ContextInfoRelativeUrl = '_api/contextinfo';
 exports.SharePointRestClient = SharePointRestClient;
 //# sourceMappingURL=client.js.map
