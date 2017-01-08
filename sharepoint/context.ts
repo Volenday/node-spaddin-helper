@@ -62,7 +62,7 @@ import {Url} from "../helpers/url";
                 return null;
 
             let info: ISharePointContextInfo = SharePointContext.ContextCacheHandler.load(req);
-            return SharePointContext.createFromContextInfo(info);
+            return info && SharePointContext.createFromContextInfo(info);
         }
 
         private static validateContext(context: SharePointContext, req) : boolean {

@@ -44,7 +44,7 @@ class SharePointContext {
         if (!SharePointContext.ContextCacheHandler)
             return null;
         let info = SharePointContext.ContextCacheHandler.load(req);
-        return SharePointContext.createFromContextInfo(info);
+        return info && SharePointContext.createFromContextInfo(info);
     }
     static validateContext(context, req) {
         // TODO Implement this
