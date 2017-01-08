@@ -25,63 +25,74 @@ export class SharePointRestClient {
 
 
     public get(relativeUrl: string) : Promise<any> {
-        return callNodeFetch(this.getFullUrl(relativeUrl), {
-            headers: this.getHeaders()
-        }).then(r => {
-            return r.json();
-        }).catch(error => {
-            console.log("[FETCH::ERROR] " + error);
+        return new Promise((resolve, reject) => {
+                callNodeFetch(this.getFullUrl(relativeUrl), {
+                headers: this.getHeaders()
+            }).then(r => {
+                resolve(r.json());
+            }).catch(error => {
+                console.log("[FETCH::ERROR] " + error);
+                reject(error);
+            });
         });
     }
 
     public post(relativeUrl: string, data: any) : Promise<any> {
-        return callNodeFetch(this.getFullUrl(relativeUrl), {
-            headers: this.getHeaders(),
-            body:data,
-            method: 'POST'
-        })
-        .then(r => {
-            return r.json();
-        }).catch(error => {
-            console.log("[FETCH::ERROR] " + error);
+         return new Promise((resolve, reject) => {
+                callNodeFetch(this.getFullUrl(relativeUrl), {
+                headers: this.getHeaders(),
+                body:data,
+                method: 'POST'
+            }).then(r => {
+                resolve(r.json());
+            }).catch(error => {
+                console.log("[FETCH::ERROR] " + error);
+                reject(error);
+            });
         });
     }
 
     public put(relativeUrl: string, data: any) : Promise<any> {
-        return callNodeFetch(this.getFullUrl(relativeUrl), {
-            headers: this.getHeaders(),
-            body:data,
-            method: 'PUT'
-        })
-        .then(r => {
-            return r.json();
-        }).catch(error => {
-            console.log("[FETCH::ERROR] " + error);
+        return new Promise((resolve, reject) => {
+                callNodeFetch(this.getFullUrl(relativeUrl), {
+                headers: this.getHeaders(),
+                body:data,
+                method: 'PUT'
+            }).then(r => {
+                resolve(r.json());
+            }).catch(error => {
+                console.log("[FETCH::ERROR] " + error);
+                reject(error);
+            });
         });
     }
 
     public patch(relativeUrl: string, data: any) : Promise<any> {
-        return callNodeFetch(this.getFullUrl(relativeUrl), {
-            headers: this.getHeaders(),
-            body:data,
-            method: 'PATCH'
-        })
-        .then(r => {
-            return r.json();
-        }).catch(error => {
-            console.log("[FETCH::ERROR] " + error);
+        return new Promise((resolve, reject) => {
+                callNodeFetch(this.getFullUrl(relativeUrl), {
+                headers: this.getHeaders(),
+                body:data,
+                method: 'PATCH'
+            }).then(r => {
+                resolve(r.json());
+            }).catch(error => {
+                console.log("[FETCH::ERROR] " + error);
+                reject(error);
+            });
         });
     }
 
     public delete(relativeUrl: string) : Promise<any> {
-        return callNodeFetch(this.getFullUrl(relativeUrl), {
-            headers: this.getHeaders(),
-            method: 'DELETE'
-        })
-        .then(r => {
-            return r.json();
-        }).catch(error => {
-            console.log("[FETCH::ERROR] " + error);
+        return new Promise((resolve, reject) => {
+                callNodeFetch(this.getFullUrl(relativeUrl), {
+                headers: this.getHeaders(),
+                method: 'DELETE'
+            }).then(r => {
+                resolve(r.json());
+            }).catch(error => {
+                console.log("[FETCH::ERROR] " + error);
+                reject(error);
+            });
         });
     }
 }
