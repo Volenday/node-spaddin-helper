@@ -30,39 +30,46 @@ class TokenHelper {
         return token;
     }
     static getAccessToken(contextToken, siteUrl, appOnly = false) {
-        const config = configuration_1.SharePointAddinConfiguration.getInstance();
-        let realm = null;
-        let principals = null;
-        return this.getRealm(siteUrl)
-            .then(retrievedRealm => {
-            realm = retrievedRealm;
-            principals = {
-                resource: TokenHelper.getFormattedPrincipal(TokenHelper.SharePointServicePrincipal, url_1.Url.parse(siteUrl).hostname, realm),
-                formattedClientId: TokenHelper.getFormattedPrincipal(config.clientId, "", realm)
-            };
-        })
-            .then(() => TokenHelper.getAuthUrl(realm))
-            .then((authUrl) => {
-            let appctx = contextToken.appctx;
-            let refreshtoken = contextToken.refreshtoken;
-            let body = [];
-            if (!appOnly) {
-                body.push("grant_type=refresh_token");
-                body.push(`refresh_token=${refreshtoken}`);
-            }
-            body.push(`client_id=${principals.formattedClientId}`);
-            body.push(`client_secret=${encodeURIComponent(config.clientSecret)}`);
-            body.push(`resource=${principals.resource}`);
-            return node_fetch_1.default(authUrl, {
-                body: body.join("&"),
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                method: "POST",
+        return new Promise((resolve, reject) => {
+            const config = configuration_1.SharePointAddinConfiguration.getInstance();
+            let realm = null;
+            let principals = null;
+            return this.getRealm(siteUrl)
+                .then(retrievedRealm => {
+                realm = retrievedRealm;
+                principals = {
+                    resource: TokenHelper.getFormattedPrincipal(TokenHelper.SharePointServicePrincipal, url_1.Url.parse(siteUrl).hostname, realm),
+                    formattedClientId: TokenHelper.getFormattedPrincipal(config.clientId, "", realm)
+                };
+            })
+                .then(() => TokenHelper.getAuthUrl(realm))
+                .then((authUrl) => {
+                let appctx = contextToken.appctx;
+                let refreshtoken = contextToken.refreshtoken;
+                let body = [];
+                if (!appOnly) {
+                    body.push("grant_type=refresh_token");
+                    body.push(`refresh_token=${refreshtoken}`);
+                }
+                body.push(`client_id=${principals.formattedClientId}`);
+                body.push(`client_secret=${encodeURIComponent(config.clientSecret)}`);
+                body.push(`resource=${principals.resource}`);
+                return node_fetch_1.default(authUrl, {
+                    body: body.join("&"),
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    method: "POST",
+                });
+            })
+                .then((r) => {
+                console.log("getAccessToken : token = " + r);
+                resolve(r.json());
+            })
+                .catch(error => {
+                reject(error);
             });
-        })
-            .then((r) => r.json())
-            .then((token) => token);
+        });
     }
     static getRealm(siteUrl) {
         return new Promise(resolve => {
