@@ -1,6 +1,6 @@
 {
   "name": "spaddin-helper",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "description": "A helper library for building SharePoint provider-hosted addin with Node.js",
   "main": "index.js",
   "scripts": {
