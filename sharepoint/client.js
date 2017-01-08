@@ -23,6 +23,8 @@ class SharePointRestClient {
             headers: this.getHeaders()
         }).then(r => {
             return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
         });
     }
     post(relativeUrl, data) {
@@ -30,27 +32,47 @@ class SharePointRestClient {
             headers: this.getHeaders(),
             body: data,
             method: 'POST'
-        }).then(r => r.json());
+        })
+            .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
     put(relativeUrl, data) {
         return node_fetch_1.default(this.getFullUrl(relativeUrl), {
             headers: this.getHeaders(),
             body: data,
             method: 'PUT'
-        }).then(r => r.json());
+        })
+            .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
     patch(relativeUrl, data) {
         return node_fetch_1.default(this.getFullUrl(relativeUrl), {
             headers: this.getHeaders(),
             body: data,
             method: 'PATCH'
-        }).then(r => r.json());
+        })
+            .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
     delete(relativeUrl) {
         return node_fetch_1.default(this.getFullUrl(relativeUrl), {
             headers: this.getHeaders(),
             method: 'DELETE'
-        }).then(r => r.json());
+        })
+            .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
 }
 exports.SharePointRestClient = SharePointRestClient;

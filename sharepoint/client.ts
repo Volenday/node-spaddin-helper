@@ -29,6 +29,8 @@ export class SharePointRestClient {
             headers: this.getHeaders()
         }).then(r => {
             return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
         });
     }
 
@@ -37,7 +39,12 @@ export class SharePointRestClient {
             headers: this.getHeaders(),
             body:data,
             method: 'POST'
-        }).then(r => r.json());
+        })
+        .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
 
     public put(relativeUrl: string, data: any) : Promise<any> {
@@ -45,7 +52,12 @@ export class SharePointRestClient {
             headers: this.getHeaders(),
             body:data,
             method: 'PUT'
-        }).then(r => r.json());
+        })
+        .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
 
     public patch(relativeUrl: string, data: any) : Promise<any> {
@@ -53,13 +65,23 @@ export class SharePointRestClient {
             headers: this.getHeaders(),
             body:data,
             method: 'PATCH'
-        }).then(r => r.json());
+        })
+        .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
 
     public delete(relativeUrl: string) : Promise<any> {
         return callNodeFetch(this.getFullUrl(relativeUrl), {
             headers: this.getHeaders(),
             method: 'DELETE'
-        }).then(r => r.json());
+        })
+        .then(r => {
+            return r.json();
+        }).catch(error => {
+            console.log("[FETCH::ERROR] " + error);
+        });
     }
 }
