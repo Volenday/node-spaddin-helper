@@ -95,7 +95,13 @@ public static getAccessToken(contextToken: any, siteUrl: string, appOnly:boolean
             })
             .then((r: nodeFetch.Response) => {
                 console.log("getAccessToken : token = " + r);
-                resolve(r.json());
+                let token = r.json();
+                if (token) {
+                    resolve(token);
+                }
+                else {
+                    reject("Token cannot be retrieved");
+                }
             })
             .catch(error => {
                 reject(error);

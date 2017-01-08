@@ -64,7 +64,13 @@ class TokenHelper {
             })
                 .then((r) => {
                 console.log("getAccessToken : token = " + r);
-                resolve(r.json());
+                let token = r.json();
+                if (token) {
+                    resolve(token);
+                }
+                else {
+                    reject("Token cannot be retrieved");
+                }
             })
                 .catch(error => {
                 reject(error);
