@@ -36,7 +36,7 @@ export class SharePointRestClient {
     }
 
 
-    public get(relativeUrl: string) : Promise<any> {
+    public retrieve(relativeUrl: string) : Promise<any> {
         return new Promise((resolve, reject) => {
                 callNodeFetch(this.getFullUrl(relativeUrl), {
                 headers: this.getHeaders()
@@ -85,16 +85,12 @@ export class SharePointRestClient {
         });
     }
 
-    public post(relativeUrl: string, data: any) : Promise<any> {
+    public create(relativeUrl: string, data: any) : Promise<any> {
          return this.postRequest(null, relativeUrl, data);
     }
 
-    public put(relativeUrl: string, data: any) : Promise<any> {
-        return this.postRequest('PUT', relativeUrl, data);
-    }
-
-    public patch(relativeUrl: string, data: any) : Promise<any> {
-       return this.postRequest('PATCH', relativeUrl, data);
+    public update(relativeUrl: string, data: any) : Promise<any> {
+       return this.postRequest('MERGE', relativeUrl, data);
     }
 
     public delete(relativeUrl: string) : Promise<any> {

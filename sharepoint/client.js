@@ -28,7 +28,7 @@ class SharePointRestClient {
     getFullUrl(urlPart) {
         return URL.resolve(this.url, urlPart);
     }
-    get(relativeUrl) {
+    retrieve(relativeUrl) {
         return new Promise((resolve, reject) => {
             node_fetch_1.default(this.getFullUrl(relativeUrl), {
                 headers: this.getHeaders()
@@ -74,14 +74,11 @@ class SharePointRestClient {
             });
         });
     }
-    post(relativeUrl, data) {
+    create(relativeUrl, data) {
         return this.postRequest(null, relativeUrl, data);
     }
-    put(relativeUrl, data) {
-        return this.postRequest('PUT', relativeUrl, data);
-    }
-    patch(relativeUrl, data) {
-        return this.postRequest('PATCH', relativeUrl, data);
+    update(relativeUrl, data) {
+        return this.postRequest('MERGE', relativeUrl, data);
     }
     delete(relativeUrl) {
         return this.postRequest('DELETE', relativeUrl);
