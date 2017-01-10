@@ -27,9 +27,8 @@ class SharePointContext {
             throw new Error("httpRequest is undefined or null");
         let urlWithEnsuredSlash = url_1.Url.ensureTrailingSlash(request.query.SPHostUrl);
         if (!urlWithEnsuredSlash) {
-            let sphostUrlFromCookie = request.cookies.SpContextParameters && request.cookies.SpContextParameters.SPHostUrl;
-            urlWithEnsuredSlash = sphostUrlFromCookie ? decodeURI(sphostUrlFromCookie) : null;
-            urlWithEnsuredSlash = url_1.Url.ensureTrailingSlash(urlWithEnsuredSlash);
+            let sphostUrlFromCookie = request.cookies.SpContextParameters && url_1.Url.parseQueryString(request.cookies.SpContextParameters).SPHostUrl;
+            urlWithEnsuredSlash = url_1.Url.ensureTrailingSlash(sphostUrlFromCookie);
         }
         // Check if well formed HTTP URL
         if (urlWithEnsuredSlash) {
@@ -68,7 +67,7 @@ class SharePointContext {
             throw new Error("The HTTP request cannot be found");
         let spHostUrl = SharePointContext.getSPHostUrl(req);
         if (!spHostUrl)
-            return null;
+            return;
         let spContext = SharePointContext.loadFromRequest(req);
         if (!spContext || !SharePointContext.validateContext(spContext, req)) {
             spContext = SharePointContext.createFromRequest(req);
