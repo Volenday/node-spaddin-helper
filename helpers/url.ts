@@ -20,6 +20,21 @@ export class Url {
             };
     }
 
+    public static parseQueryString(str: string) : any {
+      let ret = {};
+      str.split("&")     // split all pairs
+                .forEach((item) => {
+                    var key = item.split("=")[0];       // Get the key
+                    var value = decodeURIComponent(item.split("=")[1]); // Get the decoded value
+                    if (key in this) {
+                        ret[key].push(value)
+                    } else {
+                        ret[key] = [value]
+                    }
+                });
+        return ret;
+    }
+
     public static validateHttpSchemes(url: string, schemes: string[]) : boolean {
             if (!url) return false;
 

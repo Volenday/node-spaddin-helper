@@ -41,9 +41,8 @@ import {Url} from "../helpers/url";
 
             let urlWithEnsuredSlash = Url.ensureTrailingSlash(request.query.SPHostUrl);
             if (!urlWithEnsuredSlash) {
-                let sphostUrlFromCookie = request.cookies.SpContextParameters && request.cookies.SpContextParameters.SPHostUrl
-                urlWithEnsuredSlash = sphostUrlFromCookie ? decodeURI(sphostUrlFromCookie) : null;
-                urlWithEnsuredSlash = Url.ensureTrailingSlash(urlWithEnsuredSlash);
+                let sphostUrlFromCookie = request.cookies.SpContextParameters && Url.parseQueryString(request.cookies.SpContextParameters).SPHostUrl
+                urlWithEnsuredSlash = Url.ensureTrailingSlash(sphostUrlFromCookie);
             }
 
             // Check if well formed HTTP URL
@@ -90,7 +89,7 @@ import {Url} from "../helpers/url";
             if (!req) throw new Error("The HTTP request cannot be found");
 
             let spHostUrl = SharePointContext.getSPHostUrl(req);
-            if (!spHostUrl) return null;
+            if (!spHostUrl) return;
 
             let spContext = SharePointContext.loadFromRequest(req);
 
