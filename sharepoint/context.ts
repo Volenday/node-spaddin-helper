@@ -48,6 +48,7 @@ import {Url} from "../helpers/url";
             // Check if well formed HTTP URL
             if (urlWithEnsuredSlash){
                 if (urlWithEnsuredSlash.indexOf("http://") == 0 || urlWithEnsuredSlash.indexOf("https://") == 0) {
+                    console.log("SPHostUrl = " + urlWithEnsuredSlash);
                     return urlWithEnsuredSlash;
                 }
             }
