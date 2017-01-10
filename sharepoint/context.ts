@@ -89,16 +89,20 @@ import {Url} from "../helpers/url";
         public static getFromRequest(req) : SharePointContext {
             if (!req) throw new Error("The HTTP request cannot be found");
 
+            console.log("Get context from request");
             let spHostUrl = SharePointContext.getSPHostUrl(req);
-            if (!spHostUrl) return;
+            if (!spHostUrl) return null;
 
+            console.log("Load context from server according to request");
             let spContext = SharePointContext.loadFromRequest(req);
 
             if (!spContext || !SharePointContext.validateContext(spContext, req))
             {
+                console.log("Context not loaded or invalid");
                 spContext = SharePointContext.createFromRequest(req);
                 if (spContext)
                 {
+                    console.log("Context created");
                     SharePointContext.save(spContext, req);
                 }
             }
