@@ -122,9 +122,9 @@ import {Url} from "../helpers/url";
                     private contextToken?: any) {
 
             if (!SPHostUrl) throw new Error("SPHostUrl is required.");
-            if (!SPProductNumber) throw new Error("SPProductNumber is required.");
-            if (!SPLanguage) throw new Error("SPLanguage is required.");
-            if (!SPClientTag) throw new Error("SPCLientTag is required.");
+            // if (!SPProductNumber) throw new Error("SPProductNumber is required.");
+            // if (!SPLanguage) throw new Error("SPLanguage is required.");
+            // if (!SPClientTag) throw new Error("SPCLientTag is required.");
         }
 
         public getContextInfo() : ISharePointContextInfo {
