@@ -94,8 +94,9 @@ export class SharePointRestClient {
                 }
                 callNodeFetch(this.getFullUrl(relativeUrl), args)
                 .then(r => {
-                    console.log("[FETCH SUCCESS] " + r.json());
-                    resolve(r.json());
+                    let jsonResult = r.json();
+                    console.log("[FETCH SUCCESS] " + JSON.stringify(jsonResult));
+                    resolve(jsonResult);
                 }).catch(error => {
                     console.log("[FETCH::ERROR] " + error);
                     reject(error);
