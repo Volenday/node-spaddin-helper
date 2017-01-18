@@ -7,6 +7,8 @@ export class SharePointRestClient {
 
     private static ContextInfoRelativeUrl = '_api/contextinfo';
 
+    public odataVerbose = true;
+
     constructor(private url: string, private authToken: string) {
 
     }
@@ -15,8 +17,8 @@ export class SharePointRestClient {
     private getHeaders(xVerb: string=null, requestDigest: string = null) : any {
         let headers = {
             "Authorization": `Bearer ${this.authToken}`,
-            "Accept": 'application/json; odata=verbose',
-            "Content-Type": 'application/json; odata=verbose'
+            "Accept": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json',
+            "Content-Type": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json'
         }
         // if (contentLength) {
         //     headers["Content-Length"] = contentLength;

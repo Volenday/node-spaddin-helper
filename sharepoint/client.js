@@ -5,13 +5,14 @@ class SharePointRestClient {
     constructor(url, authToken) {
         this.url = url;
         this.authToken = authToken;
+        this.odataVerbose = true;
     }
     // private getHeaders(requestDigest: string = null, contentLength: number = null) : any {
     getHeaders(xVerb = null, requestDigest = null) {
         let headers = {
             "Authorization": `Bearer ${this.authToken}`,
-            "Accept": 'application/json; odata=verbose',
-            "Content-Type": 'application/json; odata=verbose'
+            "Accept": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json',
+            "Content-Type": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json'
         };
         // if (contentLength) {
         //     headers["Content-Length"] = contentLength;
