@@ -86,7 +86,7 @@ export class SharePointRestClient {
             return this.getContextInfo()
             .then(contextInfo => {
                 let args = {
-                    headers: this.getHeaders(verb, getFormDigestValue(contextInfo)),
+                    headers: this.getHeaders(verb, this.getFormDigestValue(contextInfo)),
                     method: 'POST'
                 };
                 if (data) {
