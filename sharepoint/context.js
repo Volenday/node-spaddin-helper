@@ -79,6 +79,9 @@ class SharePointContext {
                 console.log("Context created");
                 SharePointContext.save(spContext, req);
             }
+            else {
+                console.log("Context not created");
+            }
         }
         return spContext;
     }

@@ -66,6 +66,7 @@ class SharePointRestClient {
                 }
                 node_fetch_1.default(this.getFullUrl(relativeUrl), args)
                     .then(r => {
+                    console.log("[FETCH SUCCESS] " + r.json());
                     resolve(r.json());
                 }).catch(error => {
                     console.log("[FETCH::ERROR] " + error);
