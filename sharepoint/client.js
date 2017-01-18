@@ -77,7 +77,7 @@ class SharePointRestClient {
                     method: 'POST'
                 };
                 if (data) {
-                    args["body"] = data;
+                    args["body"] = typeof data !== "string" ? JSON.stringify(data) : data;
                 }
                 node_fetch_1.default(this.getFullUrl(relativeUrl), args)
                     .then(r => {

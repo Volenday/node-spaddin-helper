@@ -90,7 +90,7 @@ export class SharePointRestClient {
                     method: 'POST'
                 };
                 if (data) {
-                    args["body"] = data;
+                    args["body"] = typeof data !== "string" ? JSON.stringify(data) : data;
                 }
                 callNodeFetch(this.getFullUrl(relativeUrl), args)
                 .then(r => {
