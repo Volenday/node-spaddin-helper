@@ -62,6 +62,12 @@ class SharePointRestClient {
             });
         });
     }
+    getFormDigestValue(contextInfo) {
+        if (this.odataVerbose)
+            return contextInfo.d.FormDigestValue;
+        else
+            return contextInfo.FormDigestValue;
+    }
     postRequest(verb, relativeUrl, data) {
         return new Promise((resolve, reject) => {
             return this.getContextInfo()

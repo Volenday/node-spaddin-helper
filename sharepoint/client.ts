@@ -74,6 +74,13 @@ export class SharePointRestClient {
         });
     }
 
+    private getFormDigestValue(contextInfo: any) : string {
+        if (this.odataVerbose)
+            return contextInfo.d.FormDigestValue;
+        else
+            return contextInfo.FormDigestValue;
+    }
+
     private postRequest(verb: string, relativeUrl: string, data?: any) : Promise<any> {
          return new Promise((resolve, reject) => {
             return this.getContextInfo()
