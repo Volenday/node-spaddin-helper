@@ -95,8 +95,9 @@ public static getAccessToken(contextToken: any, siteUrl: string, appOnly:boolean
                 });
             })
             .then((r: nodeFetch.Response) => {
-                console.log("getAccessToken : token = " + r);
+                
                 let token = r.json();
+                console.log("getAccessToken : token = " + JSON.stringify(token));
                 if (token) {
                     resolve(token);
                 }

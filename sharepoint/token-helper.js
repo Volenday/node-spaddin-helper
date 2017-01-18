@@ -66,8 +66,8 @@ class TokenHelper {
                 });
             })
                 .then((r) => {
-                console.log("getAccessToken : token = " + r);
                 let token = r.json();
+                console.log("getAccessToken : token = " + JSON.stringify(token));
                 if (token) {
                     resolve(token);
                 }
