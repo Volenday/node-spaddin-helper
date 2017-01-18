@@ -10,10 +10,18 @@ class SharePointRestClient {
     // private getHeaders(requestDigest: string = null, contentLength: number = null) : any {
     getHeaders(xVerb = null, requestDigest = null) {
         let headers = {
-            "Authorization": `Bearer ${this.authToken}`,
-            "Accept": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json',
-            "Content-Type": this.odataVerbose ? 'application/json; odata=verbose' : 'application/json'
+            "Authorization": `Bearer ${this.authToken}`
         };
+        if (this.odataVerbose) {
+            console.log("ODATA VERBOSE CONTENT TYPE");
+            headers["Accept"] = 'application/json; odata=verbose';
+            headers["Content-Type"] = 'application/json; odata=verbose';
+        }
+        else {
+            console.log("JSON CONTENT TYPE");
+            headers["Accept"] = 'application/json';
+            headers["Content-Type"] = 'application/json';
+        }
         // if (contentLength) {
         //     headers["Content-Length"] = contentLength;
         // }
