@@ -44,12 +44,10 @@ class TokenHelper {
             })
                 .then(() => TokenHelper.getAuthUrl(realm))
                 .then((authUrl) => {
-                let appctx = contextToken.appctx;
-                let refreshtoken = contextToken.refreshtoken;
                 let body = [];
                 if (!appOnly) {
                     body.push("grant_type=refresh_token");
-                    body.push(`refresh_token=${refreshtoken}`);
+                    body.push(`refresh_token=${contextToken.refreshtoken}`);
                 }
                 else {
                     body.push("grant_type=client_credentials");

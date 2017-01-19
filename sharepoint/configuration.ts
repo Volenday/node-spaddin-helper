@@ -1,6 +1,7 @@
 export class SharePointAddinConfiguration {
     public clientId: string;
     public clientSecret: string;
+    public spHostUrl: string;
 
     private static _instance = null;
     public static getInstance() : SharePointAddinConfiguration {
